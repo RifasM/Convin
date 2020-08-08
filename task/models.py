@@ -33,7 +33,7 @@ class TaskTracker(models.Model):
                                    default="daily",
                                    max_length=7)
     email = models.EmailField(help_text="Enter Email to send Updates",
-                              blank=False)
+                              blank=False, unique=True)
 
     class Meta:
         ordering = ["task_type"]

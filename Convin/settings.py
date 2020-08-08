@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
+from django.utils.crypto import get_random_string
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -20,10 +24,11 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0s##y&6*lnny9nbw%bcixy!o1_u6p4%%+688ehy#2+6emu%n45'
+SECRET_KEY = get_random_string(
+    50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG_PRODUCTION", True)
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'task.apps.TaskConfig',
     'rest_framework',
+    'djcelery',
+    'djcelery_email',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +133,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+EMAIL_HOST = os.getenv("EMAIL_HOST", 'smtp.gmail.com')
+
+EMAIL_PORT = os.getenv("EMAIL_PORT", 587)
+
+EMAIL_HOST_USER = os.getenv("EMAIL_USER", "info@example.com")
+
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD", "examplePassword")
+
+EMAIL_USE_TLS = True  # TLS settings
+
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
