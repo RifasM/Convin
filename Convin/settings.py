@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-from django.utils.crypto import get_random_string
-
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,8 +22,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_random_string(
-    50, "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)")
+SECRET_KEY = os.getenv("SECRET_KEY", "hellohibyebye")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG_PRODUCTION", True)
@@ -125,6 +122,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
+    'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
