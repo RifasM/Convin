@@ -19,7 +19,7 @@ app.conf.update(result_expires=3600,
 app.conf.beat_schedule = {
     "every day at 5 PM": {
         "task": "Send_Emails_Everyday",
-        "schedule": crontab(hour='17',
+        "schedule": crontab(hour=17,
                             minute=0,
                             )
     },
