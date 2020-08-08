@@ -30,7 +30,8 @@ class TaskTracker(models.Model):
                                   on_delete=models.CASCADE)
     update_type = models.CharField(choices=choices,
                                    blank=False,
-                                   default="daily")
+                                   default="daily",
+                                   max_length=7)
     email = models.EmailField(help_text="Enter Email to send Updates",
                               blank=False)
 
