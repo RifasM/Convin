@@ -1,4 +1,4 @@
-# Covin Task
+# Convin Task
 - Description of Task\
     In this assignment, you will be implementing the following using Django \
     Create two models as follows:-\
